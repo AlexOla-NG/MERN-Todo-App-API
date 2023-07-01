@@ -12,7 +12,7 @@ dotenv.config({ path: "./config/config.env" });
 connectDB();
 
 // STUB: route files
-// const bootcamps = require("./routes/bootcamps");
+const users = require("./routes/users");
 
 // STUB: init express
 const app = express();
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // STUB: mount routers
-// app.use("/api/v1/bootcamps", bootcamps);
+app.use("/api/v1/users", users);
 
 // STUB: custom error handler
 // call this after mounting the routes, else it won't work
