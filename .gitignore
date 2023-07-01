@@ -1,0 +1,4 @@
+# STUB: add folder/file paths here that will not be pushed to github
+
+node_modules/
+config/config.env
