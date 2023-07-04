@@ -6,8 +6,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
 
-// TODO: stopped here
-// test routes with postman
+// TODO: add a route & controller for resetting password
 
 // @desc    Get all users
 // @route   GET /api/v1/users
@@ -124,7 +123,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 	});
 	await newUser.save();
 
-	res.status(201).json({ success: true, data: user });
+	res.status(201).json({ success: true, data: newUser });
 });
 
 // @desc    Update user
