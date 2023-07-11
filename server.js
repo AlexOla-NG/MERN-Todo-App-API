@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const colors = require("colors");
+const cors = require("cors");
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV === "development") {
 	app.use(morgan("dev"));
 }
 
+app.use(cors());
 // STUB: mount routers
 app.use("/api/v1/users", users);
 
