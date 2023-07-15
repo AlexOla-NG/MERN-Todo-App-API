@@ -14,6 +14,7 @@ connectDB();
 
 // STUB: route files
 const users = require("./routes/users");
+const todos = require("./routes/todos");
 
 // STUB: init express
 const app = express();
@@ -30,6 +31,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(cors());
 // STUB: mount routers
 app.use("/api/v1/users", users);
+app.use("/api/v1/todos", todos);
 
 // STUB: custom error handler
 // call this after mounting the routes, else it won't work
