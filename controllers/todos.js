@@ -112,3 +112,19 @@ exports.deleteTodo = asyncHandler(async (req, res, next) => {
 		},
 	});
 });
+
+// @desc    get status options
+// @route   GET /api/v1/todos/status
+// @access  Private
+exports.getTodoStatusOptions = asyncHandler(async (req, res, next) => {
+	 const statusOptions = await Todo.getStatusOptions();
+
+	if (!statusOptions) {
+		return next(new ErrorResponse(`Error fetching status options`), 500);
+	}
+
+	res.status(200).json({
+		success: true,
+		data: statusOptions,
+	});
+});
