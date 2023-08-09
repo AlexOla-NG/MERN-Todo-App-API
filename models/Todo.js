@@ -9,18 +9,4 @@ const TodoSchema = new mongoose.Schema({
 	createdAt: { type: Date, default: Date.now },
 });
 
-// STUB: get status field
-TodoSchema.statics.getStatusOptions = async function () {
-	try {
-		const statusOptions = await this.aggregate([
-			{ $group: { _id: "$status" } },
-		]);
-
-		const statusValues = statusOptions.map((option) => option._id);
-		return statusValues;
-	} catch (error) {
-		console.error("Error fetching status options:", error);
-	}
-};
-
 module.exports = mongoose.model("Todo", TodoSchema);
