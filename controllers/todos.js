@@ -4,13 +4,29 @@ const Todo = require("../models/Todo");
 const User = require("../models/User");
 
 // @desc    Get all todos
-// @route   GET /api/v1/users/:userId/todos
+// @route   GET /api/v1/todos
 // @access  Public
 exports.getTodos = asyncHandler(async (req, res, next) => {
+
+	const todos = await Todo.find();
+
+	return res.status(200).json({
+		success: true,
+		count: todos.length,
+		data: todos,
+	});
+});
+
+// @desc    Get user todos
+// @route   GET /api/v1/users/:userId/todos
+// @access  Public
+exports.getTodosByUserId = asyncHandler(async (req, res, next) => {
+	console.log(req.query);
 	// STUB: get todos associated with a user
 	// else get all todos
 	if (req.params.userId) {
-		const todos = await Todo.find({ user: req.params.userId });
+		const todos = await Todo.find(req.query);
+		// const todos = await Todo.find({ user: req.params.userId });
 
 		return res.status(200).json({
 			success: true,
@@ -117,7 +133,7 @@ exports.deleteTodo = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/todos/status
 // @access  Private
 exports.getTodoStatusOptions = asyncHandler(async (req, res, next) => {
-	 const statusOptions = await Todo.schema.path('status').options.enum;
+	const statusOptions = await Todo.schema.path('status').options.enum;
 
 	if (!statusOptions) {
 		return next(new ErrorResponse(`Error fetching status options`), 500);
