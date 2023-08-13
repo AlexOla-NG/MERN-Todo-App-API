@@ -2,6 +2,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const Todo = require("../models/Todo");
 const User = require("../models/User");
+const advancedResults = require("../middleware/advancedResults");
 
 // @desc    Get all todos
 // @route   GET /api/v1/todos
@@ -17,15 +18,24 @@ exports.getTodos = asyncHandler(async (req, res, next) => {
 	});
 });
 
+// TODO: stopped here
+// we need a way to get the active & completed todos for a user
+
 // @desc    Get user todos
 // @route   GET /api/v1/users/:userId/todos
 // @access  Public
 exports.getTodosByUserId = asyncHandler(async (req, res, next) => {
 	// STUB: get todos associated with a user
 	// else get all todos
+	// console.log(req.query);
 	if (req.params.userId) {
 		const todos = await Todo.find({ user: req.params.userId });
-		// const todos = await Todo.find(req.query);
+
+		// if(req.query) {
+			// advancedResults(Todo, req.query)
+			// const todos = await Todo.find({ user: req.params.userId, status: req.query });
+			
+		// }
 
 		return res.status(200).json({
 			success: true,
