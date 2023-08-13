@@ -21,12 +21,11 @@ exports.getTodos = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/users/:userId/todos
 // @access  Public
 exports.getTodosByUserId = asyncHandler(async (req, res, next) => {
-	console.log(req.query);
 	// STUB: get todos associated with a user
 	// else get all todos
 	if (req.params.userId) {
-		const todos = await Todo.find(req.query);
-		// const todos = await Todo.find({ user: req.params.userId });
+		const todos = await Todo.find({ user: req.params.userId });
+		// const todos = await Todo.find(req.query);
 
 		return res.status(200).json({
 			success: true,
@@ -127,6 +126,29 @@ exports.deleteTodo = asyncHandler(async (req, res, next) => {
 			message: "todo deleted",
 		},
 	});
+});
+
+// @desc    delete user completed todos
+// @route   DELETE /api/v1/users/:userId/todos
+// @access  Private
+exports.deleteUserCompletedTodos = asyncHandler(async (req, res, next) => {
+
+	if (req.params.userId) {
+		await Todo.deleteMany({ user: req.params.userId, status: 'completed' });
+
+		res.status(200).json({
+			success: true,
+			data: {
+				message: "todos deleted",
+			},
+		});
+	} else {
+		return next(
+			new ErrorResponse(`No user with the id of ${req.params.userId}`),
+			404
+		);
+	}
+
 });
 
 // @desc    get status options

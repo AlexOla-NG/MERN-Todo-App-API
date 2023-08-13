@@ -7,7 +7,8 @@ const {
 	updateTodo,
 	deleteTodo,
 	getTodoStatusOptions,
-	getTodosByUserId
+	getTodosByUserId,
+	deleteUserCompletedTodos
 } = require("../controllers/todos");
 
 const Todo = require("../models/Todo");
@@ -15,7 +16,7 @@ const advancedResults = require("../middleware/advancedResults");
 
 const router = express.Router({ mergeParams: true });
 
-router.route("/").get(advancedResults(Todo, "user"), getTodosByUserId).post(addTodo);
+router.route("/").get(advancedResults(Todo, "user"), getTodosByUserId).post(addTodo).delete(deleteUserCompletedTodos);
 
 router.route("/").get(getTodos);
 
