@@ -2,6 +2,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const Todo = require("../models/Todo");
 const User = require("../models/User");
+const statusEnumValues = require("../utils/statusEnumValues");
 const advancedResults = require("../middleware/advancedResults");
 
 // @desc    Get all todos
@@ -19,6 +20,7 @@ exports.getTodos = asyncHandler(async (req, res, next) => {
 });
 
 // TODO: stopped here
+// all queries to todo document is returning 404, please debug
 // we need a way to get the active & completed todos for a user
 
 // @desc    Get user todos
@@ -165,14 +167,8 @@ exports.deleteUserCompletedTodos = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/todos/status
 // @access  Private
 exports.getTodoStatusOptions = asyncHandler(async (req, res, next) => {
-	const statusOptions = await Todo.schema.path('status').options.enum;
-
-	if (!statusOptions) {
-		return next(new ErrorResponse(`Error fetching status options`), 500);
-	}
-
 	res.status(200).json({
 		success: true,
-		data: statusOptions,
+		data: statusEnumValues,
 	});
 });
