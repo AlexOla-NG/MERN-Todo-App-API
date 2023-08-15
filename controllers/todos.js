@@ -19,10 +19,6 @@ exports.getTodos = asyncHandler(async (req, res, next) => {
 	});
 });
 
-// TODO: stopped here
-// all queries to todo document is returning 404, please debug
-// we need a way to get the active & completed todos for a user
-
 // @desc    Get user todos
 // @route   GET /api/v1/users/:userId/todos
 // @access  Public
@@ -34,9 +30,9 @@ exports.getTodosByUserId = asyncHandler(async (req, res, next) => {
 		const todos = await Todo.find({ user: req.params.userId });
 
 		// if(req.query) {
-			// advancedResults(Todo, req.query)
-			// const todos = await Todo.find({ user: req.params.userId, status: req.query });
-			
+		// advancedResults(Todo, req.query)
+		// const todos = await Todo.find({ user: req.params.userId, status: req.query });
+
 		// }
 
 		return res.status(200).json({
@@ -53,6 +49,9 @@ exports.getTodosByUserId = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/todos/:id
 // @access  Public
 exports.getTodo = asyncHandler(async (req, res, next) => {
+	if (req.params.id === 'status') {
+		return next()
+	}
 	const todo = await Todo.findById(req.params.id).populate({
 		path: "user",
 		select: "fullname email",
@@ -166,7 +165,7 @@ exports.deleteUserCompletedTodos = asyncHandler(async (req, res, next) => {
 // @desc    get status options
 // @route   GET /api/v1/todos/status
 // @access  Private
-exports.getTodoStatusOptions = asyncHandler(async (req, res, next) => {
+exports.getTodoStatusOptions = asyncHandler(async (req, res) => {
 	res.status(200).json({
 		success: true,
 		data: statusEnumValues,
