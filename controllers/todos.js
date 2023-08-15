@@ -3,7 +3,6 @@ const asyncHandler = require("../middleware/async");
 const Todo = require("../models/Todo");
 const User = require("../models/User");
 const statusEnumValues = require("../utils/statusEnumValues");
-const advancedResults = require("../middleware/advancedResults");
 
 // @desc    Get all todos
 // @route   GET /api/v1/todos
@@ -25,21 +24,36 @@ exports.getTodos = asyncHandler(async (req, res, next) => {
 exports.getTodosByUserId = asyncHandler(async (req, res, next) => {
 	// STUB: get todos associated with a user
 	// else get all todos
-	// console.log(req.query);
 	if (req.params.userId) {
 		const todos = await Todo.find({ user: req.params.userId });
 
-		// if(req.query) {
-		// advancedResults(Todo, req.query)
-		// const todos = await Todo.find({ user: req.params.userId, status: req.query });
+		// STUB: if status is passed in as a query param, filter the todos
+		if (req.query.status) {
 
-		// }
+			if (statusEnumValues.includes(req.query.status)) {
+
+				const newTodos = todos.filter(todo => {
+					return todo.status === req.query.status;
+				});
+				return res.status(200).json({
+					success: true,
+					count: newTodos.length,
+					data: newTodos,
+				});
+			} else {
+				return next(
+					new ErrorResponse(`Invalid todo status '${req.query.status}' found. Todo can either be 'active' or 'completed'`, 400)
+				);
+			}
+
+		}
 
 		return res.status(200).json({
 			success: true,
 			count: todos.length,
 			data: todos,
 		});
+
 	} else {
 		res.status(200).json(res.advancedResults);
 	}
