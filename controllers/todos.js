@@ -9,7 +9,10 @@ const statusEnumValues = require("../utils/statusEnumValues");
 // @access  Public
 exports.getTodos = asyncHandler(async (req, res, next) => {
 
-	const todos = await Todo.find();
+	const todos = await Todo.find().populate({
+		path: "user",
+		select: "fullname",
+	});
 
 	return res.status(200).json({
 		success: true,

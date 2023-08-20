@@ -16,9 +16,9 @@ const advancedResults = require("../middleware/advancedResults");
 
 const router = express.Router({ mergeParams: true });
 
-router.route("/").get(advancedResults(Todo, "user"), getTodosByUserId).post(addTodo).delete(deleteUserCompletedTodos);
-
 router.route("/").get(getTodos);
+
+router.route("/").get(advancedResults(Todo, "user"), getTodosByUserId).post(addTodo).delete(deleteUserCompletedTodos);
 
 router.route("/:id").get(getTodo).put(updateTodo).delete(deleteTodo);
 
