@@ -1,6 +1,8 @@
 // NOTE: middleware that handles advanced querying features
+const asyncHandler = require("../middleware/async");
 
-const advancedResults = (model, populate) => async (req, res, next) => {
+
+const advancedResults = (model, populate) => asyncHandler(async (req, res, next) => {
 	let query;
 
 	// STUB: copy req.query into a new object
@@ -22,14 +24,13 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 	);
 
 	// STUB: finding resource
-	if(req.newQuery.user) {
-		query = model.find({ user: req.newQuery.user, ...JSON.parse(queryStr) });
+	if(req.params.userId) {
+		query = model.find({ user: req.params.userId, ...JSON.parse(queryStr) });
 	
 	} else {
 		query = model.find(JSON.parse(queryStr));
 
 	}
-	// query = model.find(JSON.parse(queryStr));
 
 	// STUB: select fields
 	if (req.query.select) {
@@ -86,6 +87,6 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 	};
 
 	next();
-};
+});
 
 module.exports = advancedResults;
