@@ -22,7 +22,14 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 	);
 
 	// STUB: finding resource
-	query = model.find(JSON.parse(queryStr));
+	if(req.newQuery.user) {
+		query = model.find({ user: req.newQuery.user, ...JSON.parse(queryStr) });
+	
+	} else {
+		query = model.find(JSON.parse(queryStr));
+
+	}
+	// query = model.find(JSON.parse(queryStr));
 
 	// STUB: select fields
 	if (req.query.select) {
@@ -47,6 +54,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 
 	query = query.skip(startIndex).limit(limit);
 
+	// STUB: populate
 	if (populate) {
 		query = query.populate(populate);
 	}
